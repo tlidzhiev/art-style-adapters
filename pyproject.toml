@@ -1,0 +1,29 @@
+[project]
+name = "art-style-adapters"
+version = "0.1.0"
+description = "Comparing parameter-efficient adapters for painter style learning in diffusion models"
+readme = "README.md"
+requires-python = "==3.12.11"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "ipykernel==7.4.0",
+    "ipywidgets==8.1.9",
+    "jupyter==1.1.1",
+    "pre-commit==4.7.0",
+    "ruff==0.17.1",
+    "ty==0.0.88",
+]
+
+[tool.uv]
+package = true
+
+[tool.setuptools]
+packages = ["src"]
+
+[tool.ruff.format]
+quote-style = "single"
+
+[tool.ruff]
+line-length = 100
