@@ -1,0 +1,4 @@
+_target_: peft.LoHaConfig
+r: 8 # two pairs of matrices: about as many parameters as LoRA with r=16
+alpha: 8
+target_modules: [to_q, to_k, to_v, to_out.0]

@@ -4,7 +4,21 @@ version = "0.1.0"
 description = "Comparing parameter-efficient adapters for painter style learning in diffusion models"
 readme = "README.md"
 requires-python = "==3.12.11"
-dependencies = []
+dependencies = [
+    "accelerate==1.15.0",
+    "bitsandbytes==0.50.2",
+    "comet-ml==3.58.8",
+    "datasets==5.1.0",
+    "diffusers==0.41.0",
+    "hydra-core==1.3.0",
+    "numpy==2.5.4",
+    "omegaconf==2.4.0",
+    "pandas==3.0.6",
+    "peft==0.21.2",
+    "torch==2.14.1",
+    "torchvision==0.29.1",
+    "transformers==5.20.2",
+]
 
 [dependency-groups]
 dev = [

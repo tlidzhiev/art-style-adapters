@@ -1,0 +1,4 @@
+_target_: peft.OFTConfig
+r: 0 # set either r (number of blocks) or oft_block_size
+oft_block_size: 32
+target_modules: [to_q, to_k, to_v, to_out.0]

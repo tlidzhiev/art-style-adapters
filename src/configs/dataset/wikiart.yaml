@@ -1,0 +1,8 @@
+train:
+  _target_: src.dataset.style.StyleDataset
+  path: data/train_data/wikiart/raw/wikiart_a1fef7_train50_test10_seed42_clip
+  artists: null # artist slugs to keep, e.g. [ivan-aivazovsky]; null -> all artists of the dataset. The trigger words are taken from the dataset
+  split: train
+  resolution: ${model.resolution} # set by the model config
+  center_crop: true # false -> random crop
+  random_flip: false

@@ -1,0 +1,5 @@
+_target_: peft.LoraConfig
+r: 16
+lora_alpha: 16
+use_dora: true
+target_modules: [to_q, to_k, to_v, to_out.0]

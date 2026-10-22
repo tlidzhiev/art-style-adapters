@@ -214,3 +214,22 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# .DS_Store
+.DS_Store
+
+# Temporary files
+temp*
+
+# Data files
+data/train_data/
+
+# Logs
+.cometml-runs
+artifacts/
+comet_export/
+logs/
+outputs/
+
+# Configs
+.comet.config

@@ -1,0 +1,47 @@
+root: train_data/wikiart/raw
+
+artists: # wikiart slug -> LoRA trigger word
+  ivan-aivazovsky: aivazovsky style
+  ivan-shishkin: shishkin style
+  isaac-levitan: levitan style
+  arkhip-kuindzhi: kuindzhi style
+  mikhail-vrubel: vrubel style
+  ivan-bilibin: bilibin style
+  ilya-repin: repin style
+  viktor-vasnetsov: vasnetsov style
+
+subset: # per artist
+  train_size: 50
+  test_size: 10
+  seed: 42
+
+caption:
+  target: clip # clip -> SD 1.5 / SDXL (short captions), t5 -> SD3 / SD3.5 / Flux (detailed)
+  recaption: false # true -> regenerate the captions
+  model: null # null -> pick by VRAM size
+  large_model: Qwen/Qwen2.5-VL-7B-Instruct
+  small_model: Qwen/Qwen2.5-VL-3B-Instruct
+  large_vram_gb: 22 # >= -> large_model (L4, A100), otherwise small_model (T4)
+  batch_size: null # null -> large_batch_size / small_batch_size by VRAM size
+  large_batch_size: 8
+  small_batch_size: 4
+  max_side: 768
+  max_new_tokens:
+    clip: 60
+    t5: 180
+  rules: >-
+    Do NOT mention the artist, the art style or movement, the medium, the technique or brushwork,
+    and do not say that this is a painting or an artwork.
+    If the image is a portrait, a sketch, a study, or has a decorative border or text, say so.
+    Do not start with phrases like 'The image shows' or 'This painting depicts'.
+    Write in English, plain prose, no lists, no quotes.
+  prompts:
+    clip: >-
+      Write a short caption describing the content of this image, for training a text-to-image model.
+      Mention the main subjects, the setting and the composition; mention time of day, weather or lighting
+      only if notable. ${caption.rules} One sentence, at most 30 words.
+    t5: >-
+      Describe the content of this image for training a text-to-image model.
+      Mention the main subjects and what they are doing, the setting, the composition
+      (foreground, background, framing), time of day, weather, lighting and dominant colors.
+      ${caption.rules} Two to four sentences, at most 100 words.

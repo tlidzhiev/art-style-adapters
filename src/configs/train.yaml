@@ -1,0 +1,52 @@
+defaults:
+  - model: sd15 # configs/model/{sd15,sd21}.yaml
+  - dataset: wikiart # configs/dataset/wikiart.yaml
+  - dataloader: default # configs/dataloader/default.yaml
+  - adapter: lora # configs/adapter/{lora,dora,loha,lokr,oft}.yaml
+  - optimizer: adamw # configs/optimizer/{adamw,adamw8bit}.yaml
+  - lr_scheduler: cosine # configs/lr_scheduler/{cosine,linear,constant_with_warmup}.yaml
+  - _self_
+  - override hydra/job_logging: disabled # no log files of hydra in the run directory
+  - override hydra/hydra_logging: disabled
+
+seed: 42
+
+writer:
+  project: art-style-adapters # the project of the tracker and the directory of the runs
+  run_name: ${hydra:runtime.choices.model}_${hydra:runtime.choices.adapter}_${now:%Y%m%d-%H%M%S} # set it for a readable name of the run
+  log_dir: logs/${writer.project}/${writer.run_name} # everything is saved here, relative to the project root
+  run_id: null # generated in setup_saving, id of the run in the tracker
+  id_length: 8
+
+trainer:
+  checkpoint_dir: ${writer.log_dir}/checkpoints
+  save_every: 500 # optimizer steps; the adapter is also saved at the last step
+  override: false # true -> delete the run directory if it exists
+  log_with: null # tracker of the metrics: tensorboard / wandb / comet_ml (the matching package is required)
+
+train:
+  num_epochs: 20 # epochs over the train loader
+  grad_accum: 4
+  max_grad_norm: 1.0
+  mixed_precision: null # null -> bf16 / fp16 on CUDA, no otherwise; or no / fp16 / bf16
+  gradient_checkpointing: true
+  log_step: 10 # optimizer steps
+
+validation:
+  every: 100 # optimizer steps; samples are also generated before and after the training
+  steps: 30 # inference steps
+  guidance_scale: 7.5
+  loss_images: 4 # held-out paintings of every artist for the validation loss
+  loss_timesteps: 5 # fixed timesteps of the validation loss
+  num_holdout: 1 # captions of the held-out paintings of every artist added to the prompts
+  prompts: # {trigger} -> one prompt per artist
+    - '{trigger}, a river valley with a forest at sunset'
+    - '{trigger}, a portrait of an old man with a beard'
+    - a river valley with a forest at sunset # no trigger: the style must not leak
+
+hydra:
+  run:
+    dir: ${writer.log_dir} # run from the project root
+  sweep:
+    dir: logs/${writer.project}
+    subdir: ${writer.run_name}

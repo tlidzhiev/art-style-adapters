@@ -1,0 +1,4 @@
+_target_: diffusers.optimization.get_scheduler
+name: cosine
+num_warmup_steps: 100 # optimizer steps, multiplied by the number of processes in train.py
+num_training_steps: null # set in train.py: train.num_epochs * steps per epoch * the number of processes
